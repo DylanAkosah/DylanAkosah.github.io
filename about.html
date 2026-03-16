@@ -306,8 +306,8 @@
           <span class="detail-value" id="dv-fields">Physics · Philosophy · Mathematics</span>
         </div>
         <div class="detail-item">
-          <span class="detail-label">Employer</span>
-          <span class="detail-value" id="dv-employer">CoxHealth</span>
+          <span class="detail-label">Affiliation</span>
+          <span class="detail-value" id="dv-employer">Springfield Catholic High School</span>
         </div>
         <div class="detail-item">
           <span class="detail-label">Goal</span>
@@ -316,6 +316,10 @@
         <div class="detail-item">
           <span class="detail-label">Graduating</span>
           <span class="detail-value" id="dv-graduating">2027</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Focus</span>
+          <span class="detail-value" id="dv-focus">General Relativity · Cosmology · Mathematical Physics</span>
         </div>
       </div>
     </div>
@@ -355,6 +359,7 @@
       if (d.employer)   document.getElementById('dv-employer').textContent   = d.employer;
       if (d.goal)       document.getElementById('dv-goal').textContent       = d.goal;
       if (d.graduating) document.getElementById('dv-graduating').textContent = d.graduating;
+      if (d.focus) document.getElementById('dv-focus').textContent = d.focus;
     }
     loadAboutData();
   </script>
