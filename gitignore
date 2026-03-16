@@ -1,0 +1,31 @@
+# ── Dylan Akosah Site — GitHub .gitignore ──
+
+# CRITICAL: Admin files — NEVER publish to GitHub
+admin.html
+admin-supabase.html
+dylan-akosah-admin.html
+dylan-akosah-admin-supabase.html
+
+# Secrets / environment
+.env
+.env.local
+.env.production
+*.env
+secrets.json
+
+# Supabase local config
+.supabase/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Node (if added later)
+node_modules/
+dist/

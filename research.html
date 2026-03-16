@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Research — Dylan Akosah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      background: rgba(0,0,0,0.97);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo {
+      font-family: 'Eurostile', Arial, sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+
+    nav a:hover { opacity: 1; }
+    nav a.active { opacity: 1; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 9rem 2.5rem 3rem;
+      max-width: 1300px;
+      margin: 0 auto;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .page-hero.visible { opacity: 1; transform: translateY(0); }
+
+    .page-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 1rem;
+    }
+
+    .page-title {
+      font-family: 'Eurostile', Arial, sans-serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    /* ── PUBLICATIONS LAYOUT ── */
+    .publications {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2.5rem 8rem;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 0;
+    }
+
+    /* ── LEFT: DECADE + YEAR TABS ── */
+    .sidebar {
+      padding: 4rem 3rem 4rem 0;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 5rem;
+      height: fit-content;
+    }
+
+    .decade-group {
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .decade-group.visible { opacity: 1; transform: translateY(0); }
+
+    .decade-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+
+    .decade-line {
+      width: 2rem;
+      height: 2px;
+      background: rgba(255,255,255,0.3);
+      margin-bottom: 1rem;
+    }
+
+    .year-btn {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.28);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.2rem 0;
+      text-align: left;
+      transition: color 0.2s;
+      line-height: 1.7;
+    }
+
+    .year-btn:hover { color: rgba(255,255,255,0.7); }
+    .year-btn.active { color: #fff; }
+
+    /* ── RIGHT: PAPERS ── */
+    .papers-panel {
+      padding: 4rem 0 4rem 4rem;
+    }
+
+    .year-section {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .year-section.active {
+      display: block;
+    }
+
+    .year-section.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .year-heading {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .paper {
+      margin-bottom: 2.8rem;
+      padding-bottom: 2.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .paper:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .paper-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-style: normal;
+      color: #fff;
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.02em;
+    }
+
+    .paper-meta {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+    }
+
+    .paper-meta strong {
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.18);
+    }
+
+    .back-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: #fff; }
+
+    @media (max-width: 860px) {
+      .publications { grid-template-columns: 1fr; }
+      .sidebar { position: static; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 2.5rem 0; display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start; }
+      .decade-group { margin-bottom: 0; }
+      .papers-panel { padding: 3rem 0; }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 1rem 1.2rem; }
+      nav { display: none; }
+      .publications { padding: 0 1.2rem 5rem; }
+      .page-hero { padding: 7rem 1.2rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">DYLAN AKOSAH</a>
+    <nav>
+      <ul>
+        <li><a href="index.html#news">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="research.html" class="active">Research</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-hero" id="hero">
+    <p class="page-eyebrow">Dylan Akosah &nbsp;·&nbsp; Publications</p>
+    <h1 class="page-title">Research &amp;<br>Publications</h1>
+  </div>
+
+  <div class="publications">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="decade-group" id="dg-2020s">
+        <div class="decade-label">2020'S</div>
+        <div class="decade-line"></div>
+        <button class="year-btn" data-year="2026">2026</button>
+        <button class="year-btn" data-year="2025">2025</button>
+        <button class="year-btn" data-year="2024">2024</button>
+        <button class="year-btn" data-year="2023">2023</button>
+        <button class="year-btn" data-year="2022">2022</button>
+        <button class="year-btn" data-year="2021">2021</button>
+      </div>
+    </div>
+
+    <!-- PAPERS PANEL -->
+    <div class="papers-panel" id="papers-panel"></div>
+  </div>
+
+  <footer>
+    <span class="footer-name">Dylan Akosah &copy; 2026</span>
+    <a class="back-link" href="index.html">&larr; Back to Home</a>
+  </footer>
+
+  <script>
+    // ── DEFAULT RESEARCH DATA ──
+    const DEFAULT_RESEARCH = {
+      '2026': { field: 'Physics', papers: [
+        { title: 'Entanglement Density and the Geometric Stability of Non-Conformal Bridges.', author: 'D. A. Akosah', date: 'March 2026', venue: '', pages: '11p.' }
+      ]},
+      '2025': { field: 'Physics', papers: [
+        { title: 'Tachyonic Spin-2 Instabilities of Black Strings in Quadratic Gravity.', author: 'D. A. Akosah', date: 'December 2025', venue: '', pages: '14p.' }
+      ]},
+      '2024': { field: 'Philosophy', papers: [
+        { title: 'What is Truth and How Do We Know It?', author: 'D. A. Akosah', date: 'September 2024', venue: '', pages: '3p.' },
+        { title: 'Should We be Just?', author: 'D. A. Akosah', date: 'November 2024', venue: '', pages: '3p.' }
+      ]},
+      '2023': { field: 'Physics & Collaborative', papers: [
+        { title: 'The Small Things That Make Up Everything.', author: 'D. A. Akosah', date: 'April 2023', venue: '', pages: '5p.' },
+        { title: 'Lone Echo III: An Unforeseen Shift in Time.', author: 'D. A. Akosah & A. J. Pille', date: 'November 2023', venue: 'Collaborative Manuscript', pages: '81p.' }
+      ]},
+      '2022': { field: 'Physics', papers: [
+        { title: 'An Analysis of the Structure of Gravitation.', author: 'D. A. Akosah', date: 'March 2022', venue: 'Gravity Research Foundation Essay Competition', pages: '10p.' }
+      ]},
+      '2021': { field: 'Physics', papers: [
+        { title: 'The Gravitational Collapse of the Universe in Dimensions 1–4.', author: 'D. A. Akosah', date: 'July 2021', venue: '', pages: '7p.' }
+      ]},
+    };
+
+    // ── LOAD DATA ──
+    function loadResearchData() {
+      try {
+        const stored = localStorage.getItem('da_research');
+        return stored ? JSON.parse(stored) : DEFAULT_RESEARCH;
+      } catch(e) { return DEFAULT_RESEARCH; }
+    }
+
+    // ── SHOW YEAR (switch active paper panel) ──
+    let activeYear = null;
+
+    function showYear(year) {
+      activeYear = year;
+
+      // Update sidebar button states
+      document.querySelectorAll('.year-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.year === year);
+      });
+
+      // Hide all sections
+      document.querySelectorAll('.year-section').forEach(sec => {
+        sec.classList.remove('active', 'fade-in');
+      });
+
+      // Show selected
+      const target = document.getElementById('papers-' + year);
+      if (target) {
+        target.classList.add('active');
+        requestAnimationFrame(() => requestAnimationFrame(() => target.classList.add('fade-in')));
+      }
+    }
+
+    // ── RENDER EVERYTHING ──
+    function renderResearch() {
+      const data = loadResearchData();
+      const years = Object.keys(data).sort((a, b) => b - a);
+
+      // ── Rebuild sidebar year buttons ──
+      const dg = document.getElementById('dg-2020s');
+      if (dg) {
+        dg.querySelectorAll('.year-btn').forEach(b => b.remove());
+        years.forEach(yr => {
+          const btn = document.createElement('button');
+          btn.className = 'year-btn';
+          btn.dataset.year = yr;
+          btn.textContent = yr;
+          btn.addEventListener('click', () => showYear(yr));
+          dg.appendChild(btn);
+        });
+      }
+
+      // ── Rebuild papers panel ──
+      const panel = document.getElementById('papers-panel');
+      panel.innerHTML = years.map(year => {
+        const val = data[year];
+        return `
+          <div class="year-section" id="papers-${year}">
+            <div class="year-heading">${year} &nbsp;·&nbsp; ${val.field}</div>
+            ${val.papers.map(p => `
+              <div class="paper">
+                <div class="paper-title">${p.title}</div>
+                <div class="paper-meta">
+                  ${p.author || ''}<br>
+                  ${p.date || ''}${p.venue ? '<br>' + p.venue : ''}<br>
+                  <strong>${p.pages}</strong>
+                </div>
+              </div>
+            `).join('')}
+          </div>`;
+      }).join('');
+
+      // ── Show most recent year by default ──
+      showYear(years[0]);
+    }
+
+    // ── INIT ──
+    window.addEventListener('load', () => {
+      renderResearch();
+
+      // Fade in hero
+      setTimeout(() => document.getElementById('hero').classList.add('visible'), 200);
+      document.querySelectorAll('.decade-group').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 400 + i * 150);
+      });
+    });
+  </script>
+
+</body>
+</html>
